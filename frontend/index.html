@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Персональные промо-предложения</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <h1>Персональные промо-предложения</h1>
+  <p class="subtitle">Dynamic Pricing · аналитический дашборд</p>
+  <span class="spacer"></span>
+  <a href="/docs" target="_blank" rel="noopener">Документация API</a>
+</header>
+
+<main class="container">
+
+  <section class="kpi-grid" id="kpi-grid" aria-label="Ключевые показатели"></section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Распределение по сегментам</h2>
+      <span class="spacer"></span>
+      <button class="secondary" id="refresh-btn" type="button">Обновить данные</button>
+    </div>
+    <div class="segment-bars" id="segment-bars"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Клиенты</h2>
+      <span class="spacer"></span>
+      <label class="field">Поиск
+        <input type="text" id="search-input" placeholder="ID или внешний ID" autocomplete="off">
+      </label>
+      <label class="field">Сегмент
+        <select id="segment-filter">
+          <option value="">Все</option>
+          <option value="new_user">new_user</option>
+          <option value="repeat_buyer">repeat_buyer</option>
+          <option value="vip">vip</option>
+          <option value="dormant">dormant</option>
+          <option value="price_sensitive">price_sensitive</option>
+        </select>
+      </label>
+    </div>
+    <div class="table-wrapper">
+      <table id="customers-table">
+        <thead>
+          <tr>
+            <th class="sortable" data-sort-key="id">ID</th>
+            <th>Внешний ID</th>
+            <th class="sortable" data-sort-key="total_orders">Заказы</th>
+            <th class="sortable" data-sort-key="lifetime_value">LTV, ₽</th>
+            <th class="sortable" data-sort-key="avg_order_value">Средний чек, ₽</th>
+            <th class="sortable" data-sort-key="price_sensitivity">Эластичность</th>
+            <th>Сегмент</th>
+            <th>Действие</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="status-bar" id="customers-status"></p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Персональные офферы <span id="selected-customer-label"></span></h2>
+      <span class="spacer"></span>
+      <label class="field">Сумма корзины, ₽
+        <input type="number" id="cart-total-input" value="0" min="0" step="100" style="width:110px">
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" id="abandoned-cart-input">
+        Брошенная корзина
+      </label>
+      <button id="regenerate-btn" type="button" disabled>Пересчитать</button>
+    </div>
+    <div class="offers-grid" id="offers-grid"></div>
+    <p class="empty" id="offers-empty">Выберите клиента в таблице выше, чтобы сгенерировать офферы.</p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>A/B-тест: персональные против массовых промо</h2>
+    </div>
+    <div class="table-wrapper">
+      <table id="ab-test-table">
+        <thead>
+          <tr>
+            <th>Группа</th>
+            <th>Клиенты</th>
+            <th>Офферы</th>
+            <th>Конверсии</th>
+            <th>Конверсия</th>
+            <th>Средний чек, ₽</th>
+            <th>Влияние на маржу</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="status-bar" id="ab-uplift"></p>
+    <p class="note" id="ab-test-note"></p>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
