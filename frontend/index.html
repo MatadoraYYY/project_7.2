@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Персональные промо-предложения</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Персональные промо-предложения</h1>
+    <p class="subtitle">Динамическое ценообразование и оффер-инжиниринг</p>
+    <span class="spacer"></span>
+    <a href="/docs" target="_blank" rel="noopener">Документация API</a>
+  </header>
+
+  <main class="container">
+    <section id="kpi-grid" class="kpi-grid" aria-label="Ключевые показатели"></section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Распределение по сегментам</h2>
+        <span class="spacer"></span>
+        <button type="button" id="refresh-btn" class="secondary">Обновить данные</button>
+      </div>
+      <div id="segment-bars" class="segment-bars"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Клиенты</h2>
+        <span class="spacer"></span>
+        <label class="field" for="search-input">Поиск
+          <input type="text" id="search-input" placeholder="ID или внешний ID" autocomplete="off">
+        </label>
+        <label class="field" for="segment-filter">Сегмент
+          <select id="segment-filter">
+            <option value="">Все</option>
+            <option value="new_user">new_user</option>
+            <option value="repeat_buyer">repeat_buyer</option>
+            <option value="vip">vip</option>
+            <option value="dormant">dormant</option>
+            <option value="price_sensitive">price_sensitive</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="customers-table">
+          <thead>
+            <tr>
+              <th class="sortable" data-sort-key="id">ID</th>
+              <th>Внешний ID</th>
+              <th class="sortable" data-sort-key="total_orders">Заказы</th>
+              <th class="sortable" data-sort-key="lifetime_value">LTV, ₽</th>
+              <th class="sortable" data-sort-key="avg_order_value">Средний чек, ₽</th>
+              <th class="sortable" data-sort-key="price_sensitivity">Эластичность</th>
+              <th>Канал</th>
+              <th>Сегмент</th>
+              <th>Действие</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p id="customers-status" class="status-bar"></p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Персональные офферы</h2>
+        <span id="selected-customer-label" class="muted-label"></span>
+        <span class="spacer"></span>
+        <label class="field" for="cart-total-input">Сумма корзины, ₽
+          <input type="number" id="cart-total-input" min="0" step="100" value="0">
+        </label>
+        <label class="checkbox" for="abandoned-cart-input">
+          <input type="checkbox" id="abandoned-cart-input"> Брошенная корзина
+        </label>
+        <button type="button" id="regenerate-btn" disabled>Пересчитать</button>
+      </div>
+      <div id="offers-grid" class="offers-grid"></div>
+      <p id="offers-empty" class="empty">Выберите клиента в таблице, чтобы увидеть персональные офферы.</p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Агент оптимизации офферов</h2>
+        <span id="agent-engine-label" class="muted-label"></span>
+        <span class="spacer"></span>
+        <button type="button" id="optimize-btn" class="secondary" disabled>Получить рекомендации</button>
+      </div>
+      <p id="agent-strategy" class="strategy"></p>
+      <div class="table-wrapper">
+        <table id="agent-table">
+          <thead>
+            <tr>
+              <th>Тип оффера</th>
+              <th>Размер</th>
+              <th>Канал</th>
+              <th>Время отправки</th>
+              <th>Ожидаемая конверсия</th>
+              <th>Обоснование</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p id="agent-empty" class="empty">Выберите клиента, чтобы получить рекомендации по каналу и времени отправки.</p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Кампании по сегментам</h2>
+        <span class="spacer"></span>
+        <label class="field" for="campaign-segment">Сегмент
+          <select id="campaign-segment">
+            <option value="new_user">new_user</option>
+            <option value="repeat_buyer">repeat_buyer</option>
+            <option value="vip">vip</option>
+            <option value="dormant">dormant</option>
+            <option value="price_sensitive">price_sensitive</option>
+          </select>
+        </label>
+        <label class="field" for="campaign-offer-type">Оффер
+          <select id="campaign-offer-type">
+            <option value="discount_percent">discount_percent</option>
+            <option value="discount_fixed">discount_fixed</option>
+            <option value="free_shipping">free_shipping</option>
+            <option value="bonus_points">bonus_points</option>
+            <option value="gift">gift</option>
+            <option value="early_access">early_access</option>
+            <option value="bundle">bundle</option>
+            <option value="personal_manager">personal_manager</option>
+            <option value="concierge">concierge</option>
+          </select>
+        </label>
+        <label class="field" for="campaign-channel">Канал
+          <select id="campaign-channel">
+            <option value="push">push</option>
+            <option value="email">email</option>
+            <option value="sms">sms</option>
+            <option value="telegram">telegram</option>
+          </select>
+        </label>
+        <button type="button" id="schedule-btn">Запланировать</button>
+      </div>
+      <div id="campaign-result"></div>
+      <p id="campaign-empty" class="empty">Запланируйте кампанию, чтобы увидеть размер аудитории и её результативность.</p>
+    </section>
+
+    <section class="panel">
+      <h2>A/B-тест: персональные против массовых промо</h2>
+      <div class="table-wrapper">
+        <table id="ab-test-table">
+          <thead>
+            <tr>
+              <th>Группа</th>
+              <th>Клиенты</th>
+              <th>Офферы</th>
+              <th>Конверсии</th>
+              <th>Конверсия</th>
+              <th>Средний чек, ₽</th>
+              <th>Влияние на маржу</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p id="ab-uplift" class="status-bar"></p>
+      <p id="ab-test-note" class="note"></p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
